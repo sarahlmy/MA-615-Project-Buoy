@@ -19,15 +19,21 @@ pacman::p_load(
   "reshape2",
   "VGAM"
 )
-
+library(dplyr)
 ```
 
 
 ```{r}
-library(data.table)
-mydata = read.csv("BuoyData1.txt", sep=" ", header = TRUE)
-mydata <- mydata-c(1:4))
+W155_air <- read.csv("TAO_T0N155W_M_AIRT_daily.ascii", sep="", header = FALSE)
+W155_air <- W155_air[-c(1,2),-c(4:14)]
+W155_sea <- read.csv("TAO_T0N155W_M_SST_daily.ascii", sep="", header = FALSE)
+W155_sea <- W155_sea[-c(1,2),-c(4:14)]
+W155_air.tidy <- W155_air %>% filter(V1 != "Height",V1!="YYYYMMDD", V1 != "Deployment:")
 ```
+
+```{r}
+
+
 
 
 ## R Markdown
@@ -40,7 +46,6 @@ When you click the **Knit** button a document will be generated that includes bo
 summary(cars)
 
 
-#Test new sldhfusiu
 ```
 
 ## Including Plots
