@@ -22,9 +22,12 @@ W155_sea.tidy <- W155_sea %>% filter(V1 != "Height",V1!="YYYYMMDD", V1 != "Deplo
 # Rename column names
 colnames(W155_sea.tidy) <- c("date_time","time_diff","sea_temp")
 colnames(W155_air.tidy) <- c("date_time","air_temp")
-
-W155_air.tidy[,1]<-as.factor(W155_air.tidy[,1])
-W155_air.tidy[,2]<-as.factor(W155_air.tidy[,2])
+# Join to one data set
+W155_air.tidy[,1]<-as.character(W155_air.tidy[,1])
+W155_air.tidy[,2]<-as.character(W155_air.tidy[,2])
+W155_sea.tidy[,1] <-as.character(W155_sea.tidy[,1])
+W155_sea.tidy[,2] <-as.character(W155_sea.tidy[,2])
+W155_sea.tidy[,3] <-as.character(W155_sea.tidy[,3])
 
 W155_temp<-full_join(W155_sea.tidy,W155_air.tidy, by ="date_time", copy = FALSE)
 ```
