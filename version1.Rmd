@@ -45,11 +45,11 @@ W155_temp$date_time <- ymd(W155_temp$date_time)
 hour(W155_temp$date_time) <- 12
 
 # Change data type
-W155_temp $team_num <-as.numeric(W155_temp $team_num)
-W155_temp $time_diff <-as.numeric(W155_temp $time_diff)
-W155_temp $Lat <-as.numeric(W155_temp $Lat)
-W155_temp $Lon <-as.numeric(W155_temp $Lon)
-
+W155_temp $team_num <-as.integer(W155_temp $team_num)
+W155_temp $Lat <-as.numeric(W155_temp$Lat)
+W155_temp $Lon <-as.numeric(W155_temp$Lon)
+W155_temp$sea_temp <-as.numeric(W155_temp$sea_temp)
+W155_temp$air_temp <-as.numeric(W155_temp$air_temp)
 
 ```
 
