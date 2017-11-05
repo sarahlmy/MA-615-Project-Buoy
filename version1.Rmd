@@ -31,7 +31,12 @@ W155_sea.tidy[,3] <-as.character(W155_sea.tidy[,3])
 
 W155_temp<-full_join(W155_sea.tidy,W155_air.tidy, by ="date_time", copy = FALSE)
 
-W155_temp $latitude <-"0N"
-W155_temp $longitude <-"155W"
+W155_temp $team_num <-"14"
+W155_temp $reading_type <-"Buoy"
+W155_temp $time_diff <-"0"
+W155_temp $lat <-"0N"
+W155_temp $lon <-"155W"
+
+W155_temp[,c('team_num','reading_type','date_time','time_diff','lat','lon','sea_temp','air_temp')]
 ```
 
