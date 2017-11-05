@@ -37,7 +37,7 @@ W155_temp $time_diff <-"0"
 W155_temp $Lat <-"0N"
 W155_temp $Lon <-"155W"
 
-W155_temp[,c('team_num','reading_type','date_time','time_diff','Lat','Lon','sea_temp','air_temp')]
+W155_temp<-W155_temp[,c('team_num','reading_type','date_time','time_diff','Lat','Lon','sea_temp','air_temp')]
 
 ```
 
