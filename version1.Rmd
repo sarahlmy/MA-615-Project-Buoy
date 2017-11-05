@@ -8,6 +8,7 @@ output: pdf_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)
+library(lubridate)
 ```
 
 
@@ -34,14 +35,13 @@ W155_temp<-full_join(W155_sea.tidy,W155_air.tidy, by ="date_time", copy = FALSE)
 W155_temp $team_num <-"14"
 W155_temp $reading_type <-"buoy"
 W155_temp $time_diff <-"0"
-W155_temp $Lat <-"0N"
-W155_temp $Lon <-"155W"
+W155_temp $Lat <-"0"
+W155_temp $Lon <-"-155"
 # Reorder the clumns
-W155_temp<-W155_temp[,c('team_num','reading_type','date_time','time_diff','Lat','Lon','sea_temp','air_temp')]
+W155_temp<-W155_temp[,c('team_num','reading_type','time_diff','date_time','Lat','Lon','sea_temp','air_temp')]
 
 # Add hours to date_time
-W155_temp$hour <- ("12:00")
-W155_temp$date_time <- paste(W155_temp$date_time, W155_temp$hour, sep = " ")
-W155_temp <- W155_temp[, -9]
+W155_temp$date_time <- ymd(W155_temp$date_time)
+hour(W155_temp$date_time) <- 12
 ```
 
