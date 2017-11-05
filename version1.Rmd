@@ -43,5 +43,14 @@ W155_temp<-W155_temp[,c('team_num','reading_type','time_diff','date_time','Lat',
 # Add hours to date_time
 W155_temp$date_time <- ymd(W155_temp$date_time)
 hour(W155_temp$date_time) <- 12
+
+# Change data type
+W155_temp $team_num <-as.numeric(W155_temp $team_num)
+W155_temp $time_diff <-as.numeric(W155_temp $time_diff)
+W155_temp $Lat <-as.numeric(W155_temp $Lat)
+W155_temp $Lon <-as.numeric(W155_temp $Lon)
+
+
 ```
+
 
