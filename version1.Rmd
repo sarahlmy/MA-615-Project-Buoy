@@ -7,53 +7,25 @@ output: pdf_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-pacman::p_load(
-  "ggplot2",
-  "knitr",
-  "arm",
-  "data.table",
-  "foreign",
-  "car",
-  "faraway",
-  "nnet",
-  "reshape2",
-  "VGAM"
-)
 library(dplyr)
 ```
 
 
 ```{r}
+# Remove unrelated rows
 W155_air <- read.csv("TAO_T0N155W_M_AIRT_daily.ascii", sep="", header = FALSE)
 W155_air <- W155_air[-c(1,2),-c(4:14)]
 W155_sea <- read.csv("TAO_T0N155W_M_SST_daily.ascii", sep="", header = FALSE)
 W155_sea <- W155_sea[-c(1,2),-c(4:14)]
 W155_air.tidy <- W155_air %>% filter(V1 != "Height",V1!="YYYYMMDD", V1 != "Deployment:")
+W155_sea.tidy <- W155_sea %>% filter(V1 != "Height",V1!="YYYYMMDD", V1 != "Deployment:", V1 != "Depth")
+# Rename column names
+colnames(W155_sea.tidy) <- c("date_time","time_diff","sea_temp")
+colnames(W155_air.tidy) <- c("date_time","time_diff","air_temp")
+
+W155_air.tidy[,1]<-as.factor(W155_air.tidy[,1])
+W155_air.tidy[,2]<-as.factor(W155_air.tidy[,2])
+
+W155_temp<-full_join(W155_sea.tidy,W155_air.tidy, by ="date_time", copy = FALSE)
 ```
 
-```{r}
-
-
-
-
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-
-
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
