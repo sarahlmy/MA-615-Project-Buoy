@@ -1,6 +1,6 @@
 ---
 title: "Data_Clean"
-author: "Mengyun Li"
+author: "Mengyun Li, Sijia Li, Siran Li, Jinghan Cui"
 date: "2017/11/5"
 output: pdf_document
 ---
