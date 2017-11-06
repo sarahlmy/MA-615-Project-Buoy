@@ -11,46 +11,125 @@ library(dplyr)
 library(lubridate)
 ```
 
-
+##N0W155
 ```{r}
 # Remove unrelated rows
-W155_air <- read.csv("TAO_T0N155W_M_AIRT_daily.ascii", sep="", header = FALSE)
-W155_air <- W155_air[-c(1,2),-c(2,4:14)]
-W155_sea <- read.csv("TAO_T0N155W_M_SST_daily.ascii", sep="", header = FALSE)
-W155_sea <- W155_sea[-c(1,2),-c(4:14)]
-W155_air.tidy <- W155_air %>% filter(V1 != "Height",V1!="YYYYMMDD", V1 != "Deployment:")
-W155_sea.tidy <- W155_sea %>% filter(V1 != "Height",V1!="YYYYMMDD", V1 != "Deployment:", V1 != "Depth")
+N0W155_air <- read.csv("TAO_T0N155W_M_AIRT_daily.ascii", sep="", header = FALSE)
+N0W155_air <- N0W155_air[-c(1,2),-c(2,4:14)]
+N0W155_sea <- read.csv("TAO_T0N155W_M_SST_daily.ascii", sep="", header = FALSE)
+N0W155_sea <- N0W155_sea[-c(1,2),-c(4:14)]
+N0W155_air.tidy <- N0W155_air %>% filter(V1 != "Height",V1!="YYYYMMDD", V1 != "Deployment:")
+N0W155_sea.tidy <- N0W155_sea %>% filter(V1 != "Height",V1!="YYYYMMDD", V1 != "Deployment:", V1 != "Depth")
 # Rename column names
-colnames(W155_sea.tidy) <- c("date_time","time_diff","sea_temp")
-colnames(W155_air.tidy) <- c("date_time","air_temp")
+colnames(N0W155_sea.tidy) <- c("date_time","time_diff","sea_temp")
+colnames(N0W155_air.tidy) <- c("date_time","air_temp")
 # Join to one data set
-W155_air.tidy[,1]<-as.character(W155_air.tidy[,1])
-W155_air.tidy[,2]<-as.character(W155_air.tidy[,2])
-W155_sea.tidy[,1] <-as.character(W155_sea.tidy[,1])
-W155_sea.tidy[,2] <-as.character(W155_sea.tidy[,2])
-W155_sea.tidy[,3] <-as.character(W155_sea.tidy[,3])
+N0W155_air.tidy[,1]<-as.character(N0W155_air.tidy[,1])
+N0W155_air.tidy[,2]<-as.character(N0W155_air.tidy[,2])
+N0W155_sea.tidy[,1] <-as.character(N0W155_sea.tidy[,1])
+N0W155_sea.tidy[,2] <-as.character(N0W155_sea.tidy[,2])
+N0W155_sea.tidy[,3] <-as.character(N0W155_sea.tidy[,3])
 
-W155_temp<-full_join(W155_sea.tidy,W155_air.tidy, by ="date_time", copy = FALSE)
+N0W155_temp<-full_join(N0W155_sea.tidy,N0W155_air.tidy, by ="date_time", copy = FALSE)
 # Add team_num, reading_type, time_diff, latitude, longtitude
-W155_temp $team_num <-"14"
-W155_temp $reading_type <-"buoy"
-W155_temp $time_diff <-"0"
-W155_temp $Lat <-"0"
-W155_temp $Lon <-"-155"
+N0W155_temp $team_num <-"14"
+N0W155_temp $reading_type <-"buoy"
+N0W155_temp $time_diff <-"0"
+N0W155_temp $Lat <-"0"
+N0W155_temp $Lon <-"-155"
 # Reorder the clumns
-W155_temp<-W155_temp[,c('team_num','reading_type','time_diff','date_time','Lat','Lon','sea_temp','air_temp')]
+N0W155_temp<-N0W155_temp[,c('team_num','reading_type','time_diff','date_time','Lat','Lon','sea_temp','air_temp')]
 
 # Add hours to date_time
-W155_temp$date_time <- ymd(W155_temp$date_time)
-hour(W155_temp$date_time) <- 12
+N0W155_temp$date_time <- ymd(N0W155_temp$date_time)
+hour(N0W155_temp$date_time) <- 12
 
 # Change data type
-W155_temp $team_num <-as.integer(W155_temp $team_num)
-W155_temp $Lat <-as.numeric(W155_temp$Lat)
-W155_temp $Lon <-as.numeric(W155_temp$Lon)
-W155_temp$sea_temp <-as.numeric(W155_temp$sea_temp)
-W155_temp$air_temp <-as.numeric(W155_temp$air_temp)
-
+N0W155_temp $team_num <-as.integer(N0W155_temp $team_num)
+N0W155_temp $Lat <-as.numeric(N0W155_temp$Lat)
+N0W155_temp $Lon <-as.numeric(N0W155_temp$Lon)
+N0W155_temp$sea_temp <-as.numeric(N0W155_temp$sea_temp)
+N0W155_temp$air_temp <-as.numeric(N0W155_temp$air_temp)
 ```
 
+##N8E165
+```{r}
+# Remove unrelated rows
+N8E165_air <- read.csv("TAO_T8N165E_M_AIRT_daily.ascii", sep="", header = FALSE)
+N8E165_air <- N8E165_air[-c(1,2),-c(2,4:14)]
+N8E165_sea <- read.csv("TAO_T8N165E_M_SST_daily.ascii", sep="", header = FALSE)
+N8E165_sea <- N8E165_sea[-c(1,2),-c(4:14)]
+N8E165_air.tidy <- N8E165_air %>% filter(V1 != "Height",V1!="YYYYMMDD", V1 != "Deployment:")
+N8E165_sea.tidy <- N8E165_sea %>% filter(V1 != "Height",V1!="YYYYMMDD", V1 != "Deployment:", V1 != "Depth")
+# Rename column names
+colnames(N8E165_sea.tidy) <- c("date_time","time_diff","sea_temp")
+colnames(N8E165_air.tidy) <- c("date_time","air_temp")
+# Join to one data set
+N8E165_air.tidy[,1]<-as.character(N8E165_air.tidy[,1])
+N8E165_air.tidy[,2]<-as.character(N8E165_air.tidy[,2])
+N8E165_sea.tidy[,1] <-as.character(N8E165_sea.tidy[,1])
+N8E165_sea.tidy[,2] <-as.character(N8E165_sea.tidy[,2])
+N8E165_sea.tidy[,3] <-as.character(N8E165_sea.tidy[,3])
 
+N8E165_temp<-full_join(N8E165_sea.tidy,N8E165_air.tidy, by ="date_time", copy = FALSE)
+# Add team_num, reading_type, time_diff, latitude, longtitude
+N8E165_temp $team_num <-"14"
+N8E165_temp $reading_type <-"buoy"
+N8E165_temp $time_diff <-"0"
+N8E165_temp $Lat <-"8"
+N8E165_temp $Lon <-"165"
+# Reorder the clumns
+N8E165_temp<-N8E165_temp[,c('team_num','reading_type','time_diff','date_time','Lat','Lon','sea_temp','air_temp')]
+
+# Add hours to date_time
+N8E165_temp$date_time <- ymd(N8E165_temp$date_time)
+hour(N8E165_temp$date_time) <- 12
+
+# Change data type
+N8E165_temp $team_num <-as.integer(N8E165_temp $team_num)
+N8E165_temp $Lat <-as.numeric(N8E165_temp$Lat)
+N8E165_temp $Lon <-as.numeric(N8E165_temp$Lon)
+N8E165_temp$sea_temp <-as.numeric(N8E165_temp$sea_temp)
+N8E165_temp$air_temp <-as.numeric(N8E165_temp$air_temp)
+```
+
+##S8E165
+```{r}
+# Remove unrelated rows
+S8E165_air <- read.csv("TAO_T8S165E_M_AIRT_daily.ascii", sep="", header = FALSE)
+S8E165_air <- S8E165_air[-c(1,2),-c(2,4:14)]
+S8E165_sea <- read.csv("TAO_T8S165E_M_SST_daily.ascii", sep="", header = FALSE)
+S8E165_sea <- S8E165_sea[-c(1,2),-c(4:14)]
+S8E165_air.tidy <- S8E165_air %>% filter(V1 != "Height",V1!="YYYYMMDD", V1 != "Deployment:")
+S8E165_sea.tidy <- S8E165_sea %>% filter(V1 != "Height",V1!="YYYYMMDD", V1 != "Deployment:", V1 != "Depth")
+# Rename column names
+colnames(S8E165_sea.tidy) <- c("date_time","time_diff","sea_temp")
+colnames(S8E165_air.tidy) <- c("date_time","air_temp")
+# Join to one data set
+S8E165_air.tidy[,1]<-as.character(S8E165_air.tidy[,1])
+S8E165_air.tidy[,2]<-as.character(S8E165_air.tidy[,2])
+S8E165_sea.tidy[,1] <-as.character(S8E165_sea.tidy[,1])
+S8E165_sea.tidy[,2] <-as.character(S8E165_sea.tidy[,2])
+S8E165_sea.tidy[,3] <-as.character(S8E165_sea.tidy[,3])
+
+S8E165_temp<-full_join(S8E165_sea.tidy,S8E165_air.tidy, by ="date_time", copy = FALSE)
+# Add team_num, reading_type, time_diff, latitude, longtitude
+S8E165_temp $team_num <-"14"
+S8E165_temp $reading_type <-"buoy"
+S8E165_temp $time_diff <-"0"
+S8E165_temp $Lat <-"-8"
+S8E165_temp $Lon <-"165"
+# Reorder the clumns
+S8E165_temp<-S8E165_temp[,c('team_num','reading_type','time_diff','date_time','Lat','Lon','sea_temp','air_temp')]
+
+# Add hours to date_time
+S8E165_temp$date_time <- ymd(S8E165_temp$date_time)
+hour(S8E165_temp$date_time) <- 12
+
+# Change data type
+S8E165_temp $team_num <-as.integer(S8E165_temp $team_num)
+S8E165_temp $Lat <-as.numeric(S8E165_temp$Lat)
+S8E165_temp $Lon <-as.numeric(S8E165_temp$Lon)
+S8E165_temp$sea_temp <-as.numeric(S8E165_temp$sea_temp)
+S8E165_temp$air_temp <-as.numeric(S8E165_temp$air_temp)
+```
