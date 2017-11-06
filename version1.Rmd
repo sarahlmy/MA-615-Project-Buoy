@@ -63,7 +63,6 @@ N0W155_temp<-na.omit(N0W155_temp)
 N0W155_temp$sea_temp<-as.numeric(N0W155_temp$sea_temp)
 N0W155_temp$air_temp<-as.numeric(N0W155_temp$air_temp)
 
-
 #calculate mean temperature of each year
 library(lubridate)
 library(ggplot2)
@@ -132,6 +131,32 @@ N8E165_temp$air_temp[N8E165_temp$air_temp=="-9.99"]<-NA
 N8E165_temp<-na.omit(N8E165_temp)
 ```
 
+## Smooth plots
+```{r, echo = FALSE}
+#clean data
+N8E165_temp$sea_temp<-as.numeric(N8E165_temp$sea_temp)
+N8E165_temp$air_temp<-as.numeric(N8E165_temp$air_temp)
+
+#calculate mean temperature of each year
+library(lubridate)
+library(ggplot2)
+N8E165_temp.plot <- N8E165_temp
+N8E165_temp.plot$year<-year(N8E165_temp.plot$date_time)
+sea<-data.frame(aggregate(N8E165_temp.plot$sea_temp~year, data=N8E165_temp.plot, mean))    
+air<-data.frame(aggregate(N8E165_temp.plot$air_temp~year, data=N8E165_temp.plot, mean))
+colnames(sea) <- c("year","sea_surface_temperature")
+colnames(air) <- c("year","air_temperature")
+
+#draw plot
+a <- ggplot(sea,mapping = aes(x =year, y=sea_surface_temperature))+geom_point() +
+  geom_smooth(method = 'loess')
+b <- ggplot(air,mapping = aes(x=year, y=air_temperature)) + geom_point() +
+  geom_smooth(method = 'loess')
+library(ggpubr)
+ggarrange(a, b)
+
+```
+
 ##S8E165
 ```{r, echo = FALSE}
 # Remove unrelated rows
@@ -177,6 +202,30 @@ S8E165_temp$sea_temp[S8E165_temp$sea_temp=="-9.999"]<-NA
 S8E165_temp$air_temp[S8E165_temp$air_temp=="-9.99"]<-NA
 S8E165_temp<-na.omit(S8E165_temp)
 ```
+```{r, echo = FALSE}
+#clean data
+S8E165_temp$sea_temp<-as.numeric(S8E165_temp$sea_temp)
+S8E165_temp$air_temp<-as.numeric(S8E165_temp$air_temp)
+
+#calculate mean temperature of each year
+library(lubridate)
+library(ggplot2)
+S8E165_temp.plot <- S8E165_temp
+S8E165_temp.plot$year<-year(S8E165_temp.plot$date_time)
+sea<-data.frame(aggregate(S8E165_temp.plot$sea_temp~year, data=S8E165_temp.plot, mean))    
+air<-data.frame(aggregate(S8E165_temp.plot$air_temp~year, data=S8E165_temp.plot, mean))
+colnames(sea) <- c("year","sea_surface_temperature")
+colnames(air) <- c("year","air_temperature")
+
+#draw plot
+a <- ggplot(sea,mapping = aes(x =year, y=sea_surface_temperature))+geom_point() +
+  geom_smooth(method = 'loess')
+b <- ggplot(air,mapping = aes(x=year, y=air_temperature)) + geom_point() +
+  geom_smooth(method = 'loess')
+library(ggpubr)
+ggarrange(a, b)
+
+```
 
 ##N8W110
 ```{r, echo = FALSE}
@@ -196,7 +245,6 @@ N8W110_air.tidy[,2]<-as.character(N8W110_air.tidy[,2])
 N8W110_sea.tidy[,1]<-as.character(N8W110_sea.tidy[,1])
 N8W110_sea.tidy[,2]<-as.character(N8W110_sea.tidy[,2])
 N8W110_sea.tidy[,3]<-as.character(N8W110_sea.tidy[,3])
-
 
 N8W110_temp<-full_join(N8W110_sea.tidy,N8W110_air.tidy, by ="date_time", copy = FALSE)
 # Add team_num, reading_type, time_diff, latitude, longtitude
@@ -225,8 +273,31 @@ N8W110_temp$air_temp[N8W110_temp$air_temp=="-9.99"]<-NA
 N8W110_temp<-na.omit(N8W110_temp)
 ```
 
+```{r, echo = FALSE}
+#clean data
+N8W110_temp$sea_temp<-as.numeric(N8W110_temp$sea_temp)
+N8W110_temp$air_temp<-as.numeric(N8W110_temp$air_temp)
 
-S8W110
+#calculate mean temperature of each year
+library(lubridate)
+library(ggplot2)
+N8W110_temp.plot <- N8W110_temp
+N8W110_temp.plot$year<-year(N8W110_temp.plot$date_time)
+sea<-data.frame(aggregate(N8W110_temp.plot$sea_temp~year, data=N8W110_temp.plot, mean))    
+air<-data.frame(aggregate(N8W110_temp.plot$air_temp~year, data=N8W110_temp.plot, mean))
+colnames(sea) <- c("year","sea_surface_temperature")
+colnames(air) <- c("year","air_temperature")
+
+#draw plot
+a <- ggplot(sea,mapping = aes(x =year, y=sea_surface_temperature))+geom_point() +
+  geom_smooth(method = 'loess')
+b <- ggplot(air,mapping = aes(x=year, y=air_temperature)) + geom_point() +
+  geom_smooth(method = 'loess')
+library(ggpubr)
+ggarrange(a, b)
+```
+
+## S8W110
 ```{r,echo = FALSE}
 # Remove unrelated rows
 S8W110_air <- read.csv("TAO_T8S110W_M_AIRT_daily.ascii", sep=" ", header = FALSE)
@@ -270,6 +341,30 @@ S8W110_temp$air_temp <-as.numeric(S8W110_temp$air_temp)
 S8W110_temp$sea_temp[S8W110_temp$sea_temp=="-9.999"]<-NA
 S8W110_temp$air_temp[S8W110_temp$air_temp=="-9.99"]<-NA
 S8W110_temp<-na.omit(S8W110_temp)
+```
+
+```{r, echo = FALSE}
+#clean data
+S8W110_temp$sea_temp<-as.numeric(S8W110_temp$sea_temp)
+S8W110_temp$air_temp<-as.numeric(S8W110_temp$air_temp)
+
+#calculate mean temperature of each year
+library(lubridate)
+library(ggplot2)
+S8W110_temp.plot <- S8W110_temp
+S8W110_temp.plot$year<-year(S8W110_temp.plot$date_time)
+sea<-data.frame(aggregate(S8W110_temp.plot$sea_temp~year, data=S8W110_temp.plot, mean))    
+air<-data.frame(aggregate(S8W110_temp.plot$air_temp~year, data=S8W110_temp.plot, mean))
+colnames(sea) <- c("year","sea_surface_temperature")
+colnames(air) <- c("year","air_temperature")
+
+#draw plot
+a <- ggplot(sea,mapping = aes(x =year, y=sea_surface_temperature))+geom_point() +
+  geom_smooth(method = 'loess')
+b <- ggplot(air,mapping = aes(x=year, y=air_temperature)) + geom_point() +
+  geom_smooth(method = 'loess')
+library(ggpubr)
+ggarrange(a, b)
 ```
 
 ```{r,echo = FALSE}
