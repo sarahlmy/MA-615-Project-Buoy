@@ -217,3 +217,8 @@ S8W110_temp $Lon <-as.numeric(S8W110_temp$Lon)
 S8W110_temp$sea_temp <-as.numeric(S8W110_temp$sea_temp)
 S8W110_temp$air_temp <-as.numeric(S8W110_temp$air_temp)
 ```
+
+```{r}
+temp <- rbind(N0W155_temp, N8E165_temp,S8E165_temp,N8W110_temp,S8W110_temp)
+```
+
