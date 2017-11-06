@@ -52,6 +52,38 @@ N0W155_temp$sea_temp <-as.numeric(N0W155_temp$sea_temp)
 N0W155_temp$air_temp <-as.numeric(N0W155_temp$air_temp)
 ```
 
+## Smooth plots
+```{r}
+#clean data
+N0W155_temp$sea_temp<-as.numeric(N0W155_temp$sea_temp)
+N0W155_temp$air_temp<-as.numeric(N0W155_temp$air_temp)
+N0W155_temp$sea_temp[N0W155_temp$sea_temp=="-9.999"]<-NA
+N0W155_temp$air_temp[N0W155_temp$air_temp=="-9.999"]<-NA
+N0W155_temp<-na.omit(N0W155_temp)
+#calculate mean temperature of each year
+library(lubridate)
+library(ggplot2)
+N0W155_temp.plot <- N0W155_temp
+N0W155_temp.plot$year<-year(N0W155_temp.plot$date_time)
+sea<-data.frame(aggregate(N0W155_temp.plot$sea_temp~year, data=N0W155_temp.plot, mean))    
+air<-data.frame(aggregate(N0W155_temp.plot$air_temp~year, data=N0W155_temp.plot, mean))
+colnames(sea) <- c("year","sea_surface_temperature")
+colnames(air) <- c("year","air_temperature")
+#draw plot
+par(mfrow=c(2,2))
+ggplot(sea,mapping = aes(x =year, y=sea_surface_temperature))+geom_point() +
+  geom_smooth(method = 'loess')
+ggplot(air,mapping = aes(x=year, y=air_temperature)) + geom_point() +
+  geom_smooth(method = 'loess')
+```
+# table
+```{r}
+library("knitr")
+x <- mean(N0W155_temp$sea_temp)
+kable(x, format="markdown", digits=2, row.names=T, col.names = "N0W155")
+```
+
+
 ##N8E165
 ```{r}
 # Remove unrelated rows
@@ -220,5 +252,23 @@ S8W110_temp$air_temp <-as.numeric(S8W110_temp$air_temp)
 
 ```{r}
 temp <- rbind(N0W155_temp, N8E165_temp,S8E165_temp,N8W110_temp,S8W110_temp)
+write.csv(temp, "team14_data.csv")
+
+```
+
+## Mapping selected buoys
+```{r}
+library(ggmap)
+library(ggplot2)
+oceania<- c(-100, -10, -190 , 10)
+ggmap(get_map(location = oceania, scale = 1, zoom = 3,source = "google", maptype = "terrain"))+
+  geom_point(aes(x=-155,y=0),alpha=0.5,size=3,color="red")+
+  geom_point(aes(x=-195,y=8),alpha=0.5,size=3,color="red")+
+  geom_point(aes(x=-195,y=-8),alpha=0.5,size=3,color="red")+
+  geom_point(aes(x=-110,y=-8),alpha=0.5,size=3,color="red")+
+  geom_point(aes(x=-110,y=8),alpha=0.5,size=3,color="red")
+```
+
+
 ```
 
