@@ -1,5 +1,5 @@
 ---
-title: "Data_Clean"
+title: "Oceania Region Buoy Report"
 author: "Mengyun Li, Sijia Li, Siran Li, Jinghan Cui"
 date: "2017/11/5"
 output: pdf_document
@@ -10,8 +10,20 @@ knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)
 library(lubridate)
 ```
+## Map
+```{r, echo = FALSE}
+library(ggmap)
+library(ggplot2)
+oceania<- c(-100, -10, -190 , 10)
+ggmap(get_map(location = oceania, scale = 1, zoom = 3,source = "google", maptype = "terrain"))+
+  geom_point(aes(x=-155,y=0),alpha=0.5,size=3,color="red")+
+  geom_point(aes(x=-195,y=8),alpha=0.5,size=3,color="red")+
+  geom_point(aes(x=-195,y=-8),alpha=0.5,size=3,color="red")+
+  geom_point(aes(x=-110,y=-8),alpha=0.5,size=3,color="red")+
+  geom_point(aes(x=-110,y=8),alpha=0.5,size=3,color="red")
+```
 
-##N0W155
+##Buoy1: 0N155W
 ```{r, echo = FALSE}
 # Remove unrelated rows
 N0W155_air <- read.csv("TAO_T0N155W_M_AIRT_daily.ascii", sep="", header = FALSE)
@@ -57,7 +69,7 @@ N0W155_temp$air_temp[N0W155_temp$air_temp=="-9.99"]<-NA
 N0W155_temp<-na.omit(N0W155_temp)
 ```
 
-## Smooth plots
+
 ```{r, echo = FALSE}
 #clean data
 N0W155_temp$sea_temp<-as.numeric(N0W155_temp$sea_temp)
@@ -81,11 +93,9 @@ b <- ggplot(air,mapping = aes(x=year, y=air_temperature)) + geom_point() +
 library(ggpubr)
 ggarrange(a,b)
 ```
-# table
 
 
-
-##N8E165
+## Buoy2: 8N165E
 ```{r, echo = FALSE}
 # Remove unrelated rows
 N8E165_air <- read.csv("TAO_T8N165E_M_AIRT_daily.ascii", sep="", header = FALSE)
@@ -131,7 +141,7 @@ N8E165_temp$air_temp[N8E165_temp$air_temp=="-9.99"]<-NA
 N8E165_temp<-na.omit(N8E165_temp)
 ```
 
-## Smooth plots
+
 ```{r, echo = FALSE}
 #clean data
 N8E165_temp$sea_temp<-as.numeric(N8E165_temp$sea_temp)
@@ -157,7 +167,7 @@ ggarrange(a, b)
 
 ```
 
-##S8E165
+## Buoy3: 8S165E
 ```{r, echo = FALSE}
 # Remove unrelated rows
 S8E165_air <- read.csv("TAO_T8S165E_M_AIRT_daily.ascii", sep="", header = FALSE)
@@ -202,6 +212,7 @@ S8E165_temp$sea_temp[S8E165_temp$sea_temp=="-9.999"]<-NA
 S8E165_temp$air_temp[S8E165_temp$air_temp=="-9.99"]<-NA
 S8E165_temp<-na.omit(S8E165_temp)
 ```
+
 ```{r, echo = FALSE}
 #clean data
 S8E165_temp$sea_temp<-as.numeric(S8E165_temp$sea_temp)
@@ -227,7 +238,7 @@ ggarrange(a, b)
 
 ```
 
-##N8W110
+## Buoy4: 8N110W
 ```{r, echo = FALSE}
 # Remove unrelated rows
 N8W110_air <- read.csv("TAO_T8N110W_M_AIRT_daily.ascii", sep=" ", header = FALSE)
@@ -297,7 +308,7 @@ library(ggpubr)
 ggarrange(a, b)
 ```
 
-## S8W110
+## Buoy5: 8S110W
 ```{r,echo = FALSE}
 # Remove unrelated rows
 S8W110_air <- read.csv("TAO_T8S110W_M_AIRT_daily.ascii", sep=" ", header = FALSE)
@@ -368,23 +379,12 @@ ggarrange(a, b)
 ```
 
 ```{r,echo = FALSE}
+# write csv file
 temp <- rbind(N0W155_temp, N8E165_temp,S8E165_temp,N8W110_temp,S8W110_temp)
 write.csv(temp, "team14_data.csv")
-
 ```
 
-## Mapping selected buoys
-```{r, echo = FALSE}
-library(ggmap)
-library(ggplot2)
-oceania<- c(-100, -10, -190 , 10)
-ggmap(get_map(location = oceania, scale = 1, zoom = 3,source = "google", maptype = "terrain"))+
-  geom_point(aes(x=-155,y=0),alpha=0.5,size=3,color="red")+
-  geom_point(aes(x=-195,y=8),alpha=0.5,size=3,color="red")+
-  geom_point(aes(x=-195,y=-8),alpha=0.5,size=3,color="red")+
-  geom_point(aes(x=-110,y=-8),alpha=0.5,size=3,color="red")+
-  geom_point(aes(x=-110,y=8),alpha=0.5,size=3,color="red")
-```
+## Summary of 5 buoys data
 ```{r results="asis", echo = FALSE}
 library(data.table)
 sum1 <- data.table(Buoy=c("N0W155","S8E165","N8E165","N8W110","S8W110"), Minimum= c(min(N0W155_temp$sea_temp),min(S8E165_temp$sea_temp),min(N8E165_temp$sea_temp),min(N8W110_temp$sea_temp),min(S8W110_temp$sea_temp)), Median =c(median(N0W155_temp$sea_temp),median(S8E165_temp$sea_temp),median(N8E165_temp$sea_temp),median(N8W110_temp$sea_temp),median(S8W110_temp$sea_temp)), Average = c(mean(N0W155_temp$sea_temp),mean(S8E165_temp$sea_temp),mean(N8E165_temp$sea_temp),mean(N8W110_temp$sea_temp),mean(S8W110_temp$sea_temp)), Maximum = c(max(N0W155_temp$sea_temp),max(S8E165_temp$sea_temp),max(N8E165_temp$sea_temp),max(N8W110_temp$sea_temp),max(S8W110_temp$sea_temp)))
