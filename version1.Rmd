@@ -53,12 +53,12 @@ N0W155_temp$air_temp <-as.numeric(N0W155_temp$air_temp)
 
 # Remove NAs
 N0W155_temp$sea_temp[N0W155_temp$sea_temp=="-9.999"]<-NA
-N0W155_temp$air_temp[N0W155_temp$air_temp=="-9.999"]<-NA
+N0W155_temp$air_temp[N0W155_temp$air_temp=="-9.99"]<-NA
 N0W155_temp<-na.omit(N0W155_temp)
 ```
 
 ## Smooth plots
-```{r}
+```{r, echo = FALSE}
 #clean data
 N0W155_temp$sea_temp<-as.numeric(N0W155_temp$sea_temp)
 N0W155_temp$air_temp<-as.numeric(N0W155_temp$air_temp)
@@ -74,18 +74,20 @@ air<-data.frame(aggregate(N0W155_temp.plot$air_temp~year, data=N0W155_temp.plot,
 colnames(sea) <- c("year","sea_surface_temperature")
 colnames(air) <- c("year","air_temperature")
 #draw plot
-par(mfrow=c(2,2))
-ggplot(sea,mapping = aes(x =year, y=sea_surface_temperature))+geom_point() +
+#par(mfrow=c(1,2))
+a <- ggplot(sea,mapping = aes(x =year, y=sea_surface_temperature))+geom_point() +
   geom_smooth(method = 'loess')
-ggplot(air,mapping = aes(x=year, y=air_temperature)) + geom_point() +
+b <- ggplot(air,mapping = aes(x=year, y=air_temperature)) + geom_point() +
   geom_smooth(method = 'loess')
+library(ggpubr)
+ggarrange(a,b)
 ```
 # table
 
 
 
 ##N8E165
-```{r}
+```{r, echo = FALSE}
 # Remove unrelated rows
 N8E165_air <- read.csv("TAO_T8N165E_M_AIRT_daily.ascii", sep="", header = FALSE)
 N8E165_air <- N8E165_air[-c(1,2),-c(2,4:14)]
@@ -126,12 +128,12 @@ N8E165_temp$air_temp <-as.numeric(N8E165_temp$air_temp)
 
 # Remove NAs
 N8E165_temp$sea_temp[N8E165_temp$sea_temp=="-9.999"]<-NA
-N8E165_temp$air_temp[N8E165_temp$air_temp=="-9.999"]<-NA
+N8E165_temp$air_temp[N8E165_temp$air_temp=="-9.99"]<-NA
 N8E165_temp<-na.omit(N8E165_temp)
 ```
 
 ##S8E165
-```{r}
+```{r, echo = FALSE}
 # Remove unrelated rows
 S8E165_air <- read.csv("TAO_T8S165E_M_AIRT_daily.ascii", sep="", header = FALSE)
 S8E165_air <- S8E165_air[-c(1,2),-c(2,4:14)]
@@ -172,12 +174,12 @@ S8E165_temp$air_temp <-as.numeric(S8E165_temp$air_temp)
 
 # Remove NAs
 S8E165_temp$sea_temp[S8E165_temp$sea_temp=="-9.999"]<-NA
-S8E165_temp$air_temp[S8E165_temp$air_temp=="-9.999"]<-NA
+S8E165_temp$air_temp[S8E165_temp$air_temp=="-9.99"]<-NA
 S8E165_temp<-na.omit(S8E165_temp)
 ```
 
 ##N8W110
-```{r}
+```{r, echo = FALSE}
 # Remove unrelated rows
 N8W110_air <- read.csv("TAO_T8N110W_M_AIRT_daily.ascii", sep=" ", header = FALSE)
 N8W110_air <- N8W110_air[-c(1,2),-c(2,4:14)]
@@ -219,13 +221,13 @@ N8W110_temp$air_temp <-as.numeric(N8W110_temp$air_temp)
 
 # Remove NAs
 N8W110_temp$sea_temp[N8W110_temp$sea_temp=="-9.999"]<-NA
-N8W110_temp$air_temp[N8W110_temp$air_temp=="-9.999"]<-NA
+N8W110_temp$air_temp[N8W110_temp$air_temp=="-9.99"]<-NA
 N8W110_temp<-na.omit(N8W110_temp)
 ```
 
 
 S8W110
-```{r}
+```{r,echo = FALSE}
 # Remove unrelated rows
 S8W110_air <- read.csv("TAO_T8S110W_M_AIRT_daily.ascii", sep=" ", header = FALSE)
 S8W110_air <- S8W110_air[-c(1,2),-c(2,4:14)]
@@ -266,18 +268,18 @@ S8W110_temp$air_temp <-as.numeric(S8W110_temp$air_temp)
 
 # Remove NAs
 S8W110_temp$sea_temp[S8W110_temp$sea_temp=="-9.999"]<-NA
-S8W110_temp$air_temp[S8W110_temp$air_temp=="-9.999"]<-NA
+S8W110_temp$air_temp[S8W110_temp$air_temp=="-9.99"]<-NA
 S8W110_temp<-na.omit(S8W110_temp)
 ```
 
-```{r}
+```{r,echo = FALSE}
 temp <- rbind(N0W155_temp, N8E165_temp,S8E165_temp,N8W110_temp,S8W110_temp)
 write.csv(temp, "team14_data.csv")
 
 ```
 
 ## Mapping selected buoys
-```{r}
+```{r, echo = FALSE}
 library(ggmap)
 library(ggplot2)
 oceania<- c(-100, -10, -190 , 10)
@@ -288,7 +290,7 @@ ggmap(get_map(location = oceania, scale = 1, zoom = 3,source = "google", maptype
   geom_point(aes(x=-110,y=-8),alpha=0.5,size=3,color="red")+
   geom_point(aes(x=-110,y=8),alpha=0.5,size=3,color="red")
 ```
-```{r results="asis"}
+```{r results="asis", echo = FALSE}
 library(data.table)
 sum1 <- data.table(Buoy=c("N0W155","S8E165","N8E165","N8W110","S8W110"), Minimum= c(min(N0W155_temp$sea_temp),min(S8E165_temp$sea_temp),min(N8E165_temp$sea_temp),min(N8W110_temp$sea_temp),min(S8W110_temp$sea_temp)), Median =c(median(N0W155_temp$sea_temp),median(S8E165_temp$sea_temp),median(N8E165_temp$sea_temp),median(N8W110_temp$sea_temp),median(S8W110_temp$sea_temp)), Average = c(mean(N0W155_temp$sea_temp),mean(S8E165_temp$sea_temp),mean(N8E165_temp$sea_temp),mean(N8W110_temp$sea_temp),mean(S8W110_temp$sea_temp)), Maximum = c(max(N0W155_temp$sea_temp),max(S8E165_temp$sea_temp),max(N8E165_temp$sea_temp),max(N8W110_temp$sea_temp),max(S8W110_temp$sea_temp)))
 library("knitr")
