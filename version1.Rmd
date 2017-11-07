@@ -68,12 +68,6 @@ N0W155_temp $Lat <-as.numeric(N0W155_temp$Lat)
 N0W155_temp $Lon <-as.numeric(N0W155_temp$Lon)
 N0W155_temp$sea_temp <-as.numeric(N0W155_temp$sea_temp)
 N0W155_temp$air_temp <-as.numeric(N0W155_temp$air_temp)
-#id<-c(1,2,3,4)
-#time<-c("00:00:01","01:02:00","09:30:01","14:15:25")
-#df<-data.frame(id,time)
-#df$time = as.POSIXct(df$time, format = "%H:%M:%S")
-#N0W155_temp$time_diff = as.POSIXct(N0W155_temp$time_diff, format = "%H:%M:%S")
-#is.POSIXct(N0W155_temp$time_diff)
 
 # Remove NAs
 N0W155_temp$sea_temp[N0W155_temp$sea_temp=="-9.999"]<-NA
@@ -283,7 +277,9 @@ write.csv(S8W110_temp, file="C:/Users/sarah/Desktop/MA 615/MA-615-Project-Buoy/8
 >>>>>>> f1df6b0dd573d274a3fb909c9df61717fb99e73c
 
 
-## Summary of 5 buoys data
+# Table Analysis
+For each buoy, we calculate the mean, median and find the maximum and minimum of the temperature in 20 years. Table 1 for sea surface temperature and table 2 for air temperature. We notice the measurement of air temperature at (N8,W110) is extremely low comparing with the others. 
+
 ```{r results="asis", echo = FALSE}
 
 sum1 <- data.table(Buoy=c("N0W155","S8E165","N8E165","N8W110","S8W110"), Minimum= c(min(N0W155_temp$sea_temp),min(S8E165_temp$sea_temp),min(N8E165_temp$sea_temp),min(N8W110_temp$sea_temp),min(S8W110_temp$sea_temp)), Median =c(median(N0W155_temp$sea_temp),median(S8E165_temp$sea_temp),median(N8E165_temp$sea_temp),median(N8W110_temp$sea_temp),median(S8W110_temp$sea_temp)), Average = c(mean(N0W155_temp$sea_temp),mean(S8E165_temp$sea_temp),mean(N8E165_temp$sea_temp),mean(N8W110_temp$sea_temp),mean(S8W110_temp$sea_temp)), Maximum = c(max(N0W155_temp$sea_temp),max(S8E165_temp$sea_temp),max(N8E165_temp$sea_temp),max(N8W110_temp$sea_temp),max(S8W110_temp$sea_temp)))
@@ -293,6 +289,9 @@ sum2 <- data.table(Buoy=c("N0W155","S8E165","N8E165","N8W110","S8W110"), Minimum
 print(knitr::kable(sum2, caption = "Air Tempurature"))
 ```
 
+# Exploratory Data Analysis
+
+For each buoy, we calculated the mean of air temperature and sea surface temperature in each year and made a scatter plot to show the trend of temperature change in different years and also the relation between air temperature and sea surface temperature. 
 
 ##Buoy1: 0N155W
 ```{r, echo = FALSE}
@@ -308,7 +307,6 @@ air<-data.frame(aggregate(N0W155_temp.plot$air_temp~year, data=N0W155_temp.plot,
 colnames(sea) <- c("year","sea_surface_temperature")
 colnames(air) <- c("year","air_temperature")
 #draw plot
-#par(mfrow=c(1,2))
 a <- ggplot(sea,mapping = aes(x =year, y=sea_surface_temperature))+geom_point() +
   geom_smooth(method = 'loess')
 b <- ggplot(air,mapping = aes(x=year, y=air_temperature)) + geom_point() +
@@ -317,7 +315,10 @@ b <- ggplot(air,mapping = aes(x=year, y=air_temperature)) + geom_point() +
 ggarrange(a,b)
 ```
 
+The sea surface temperature and air temperature have similar trend from 1991 to 2017, while the sea surface temperature is overall 0.5 degree higher than the air temperature. The highest temperature for both reach highest in 1990 and continuously go down until around 1997. The temperature go up 0.5 degree in 2005 and drop back in 2010. From 2010 to now, the temperature keeps rising.
+
 ## Buoy2: 8N165E
+
 ```{r, echo = FALSE}
 #clean data
 N8E165_temp$sea_temp<-as.numeric(N8E165_temp$sea_temp)
@@ -339,6 +340,9 @@ b <- ggplot(air,mapping = aes(x=year, y=air_temperature)) + geom_point() +
 ggarrange(a, b)
 
 ```
+
+Compared to the average surface temperature  and air temperature of the 8S165E point, those data of point 8N165E have a more clear trend to increase in general. And they have the same trend to decrease from 2005 to 2010. 
+
 
 ## Buoy3: 8S165E
 ```{r, echo = FALSE}
@@ -363,7 +367,11 @@ ggarrange(a, b)
 
 ```
 
+Those two graphs show how the average surface temperature  and air temperature of the 8S165E point has changed since 1988. The sea surface temperature and air temperature have a trend to fluctuate during the past 20 years.The shaded band shows the range of uncertainty in the data, based on the number of measurements collected and the precision of the methods used.
+
+
 ## Buoy4: 8N110W
+
 ```{r, echo = FALSE}
 #clean data
 N8W110_temp$sea_temp<-as.numeric(N8W110_temp$sea_temp)
@@ -384,6 +392,9 @@ b <- ggplot(air,mapping = aes(x=year, y=air_temperature)) + geom_point() +
   geom_smooth(method = 'loess')
 ggarrange(a, b)
 ```
+
+Comparing the other buoys we collect, the one located at (8N, 110W) does not have much variation. The air temperature in overall is 1 degree lower than the sea surface temperature but they variate in the same direction. Both temperature decrease since 1991 and go up after 2000. Although they decrease slightly from 2005 to 2010, the temperature keep increasing greatly after 2010.
+
 
 ## Buoy5: 8S110W
 ```{r, echo = FALSE}
@@ -406,6 +417,13 @@ b <- ggplot(air,mapping = aes(x=year, y=air_temperature)) + geom_point() +
   geom_smooth(method = 'loess')
 ggarrange(a, b)
 ```
+
+With similar trend as the N8W110 buoy, the buoy at (8S, 110W) has bigger variation. The air temperature is still slightly lower than the sea surface temperature but they still move in same direction.
+
+
+##Conclusion
+From all of the plots, we can conclude that the air temperature is usually lower than the sea surface temperature but they move in the same direction. With different variation, all of the measured temperature decreased during 1991-1995, grew back during 1996-2000, dropped during 2001-2010 and kept fast increasing from 2011 to present.
+
 
 ##Data Sources
 ###1) 0N155W
