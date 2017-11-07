@@ -1,6 +1,6 @@
 ---
 title: "Oceania Region Buoy Report"
-author: "Mengyun Li, Sijia Li, Siran Li, Jinghan Cui"
+author: "Mengyun Li, Sijia Li, Siran Zhao, Jinghan Cui"
 date: "2017/11/5"
 output: pdf_document
 ---
@@ -9,11 +9,16 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)
 library(lubridate)
-```
-## Map
-```{r, echo = FALSE}
-library(ggmap)
 library(ggplot2)
+library(ggmap)
+library(data.table)
+library(knitr)
+library(ggpubr)
+```
+We select 5 buoys respectively at the north, south, east, west and middle points from the Oceania region, as labeled on the map. Therefore, we can have an approximate estimation of the vast region. The data are collected approximately through a 20-year period from 1980 to 2017.
+
+```{r, echo = FALSE}
+## Map
 oceania<- c(-100, -10, -190 , 10)
 ggmap(get_map(location = oceania, scale = 1, zoom = 3,source = "google", maptype = "terrain"))+
   geom_point(aes(x=-155,y=0),alpha=0.5,size=3,color="red")+
@@ -22,6 +27,8 @@ ggmap(get_map(location = oceania, scale = 1, zoom = 3,source = "google", maptype
   geom_point(aes(x=-110,y=-8),alpha=0.5,size=3,color="red")+
   geom_point(aes(x=-110,y=8),alpha=0.5,size=3,color="red")
 ```
+
+For each buoy, we collect two kinds of data, one is air temperature and the other is sea surface temperature. All of the temperatures are measured at 12:00pm in local time. The original datasets are stored separately as air temperature and sea surface temperature for each buoy in text format.We import all of the ten datasets into R. As they show in the text file, we treat -9.999 and -9.99 as NAs and remove them and unrelated information, then merge the datasets and reorder the columns. The final data is exported as a csv file with 5 separate tab for each buoy’s data. 
 
 ```{r, echo = FALSE}
 # Remove unrelated rows
@@ -267,17 +274,19 @@ S8W110_temp$sea_temp[S8W110_temp$sea_temp=="-9.999"]<-NA
 S8W110_temp$air_temp[S8W110_temp$air_temp=="-9.99"]<-NA
 S8W110_temp<-na.omit(S8W110_temp)
 
+<<<<<<< HEAD
 #export data to csv
 write.csv(S8W110_temp, file="C:/Users/sarah/Desktop/MA 615/MA-615-Project-Buoy/8SW110.csv")
 
 ```
+=======
+>>>>>>> f1df6b0dd573d274a3fb909c9df61717fb99e73c
 
 
 ## Summary of 5 buoys data
 ```{r results="asis", echo = FALSE}
-library(data.table)
+
 sum1 <- data.table(Buoy=c("N0W155","S8E165","N8E165","N8W110","S8W110"), Minimum= c(min(N0W155_temp$sea_temp),min(S8E165_temp$sea_temp),min(N8E165_temp$sea_temp),min(N8W110_temp$sea_temp),min(S8W110_temp$sea_temp)), Median =c(median(N0W155_temp$sea_temp),median(S8E165_temp$sea_temp),median(N8E165_temp$sea_temp),median(N8W110_temp$sea_temp),median(S8W110_temp$sea_temp)), Average = c(mean(N0W155_temp$sea_temp),mean(S8E165_temp$sea_temp),mean(N8E165_temp$sea_temp),mean(N8W110_temp$sea_temp),mean(S8W110_temp$sea_temp)), Maximum = c(max(N0W155_temp$sea_temp),max(S8E165_temp$sea_temp),max(N8E165_temp$sea_temp),max(N8W110_temp$sea_temp),max(S8W110_temp$sea_temp)))
-library(knitr)
 print(knitr::kable(sum1, caption = "Sea Surface Tempurature"))
 
 sum2 <- data.table(Buoy=c("N0W155","S8E165","N8E165","N8W110","S8W110"), Minimum= c(min(N0W155_temp$air_temp),min(S8E165_temp$air_temp),min(N8E165_temp$air_temp),min(N8W110_temp$air_temp),min(S8W110_temp$air_temp)), Median =c(median(N0W155_temp$air_temp),median(S8E165_temp$air_temp),median(N8E165_temp$air_temp),median(N8W110_temp$air_temp),median(S8W110_temp$air_temp)), Average = c(mean(N0W155_temp$air_temp),mean(S8E165_temp$air_temp),mean(N8E165_temp$air_temp),mean(N8W110_temp$air_temp),mean(S8W110_temp$air_temp)), Maximum = c(max(N0W155_temp$air_temp),max(S8E165_temp$air_temp),max(N8E165_temp$air_temp),max(N8W110_temp$air_temp),max(S8W110_temp$air_temp)))
@@ -292,8 +301,6 @@ N0W155_temp$sea_temp<-as.numeric(N0W155_temp$sea_temp)
 N0W155_temp$air_temp<-as.numeric(N0W155_temp$air_temp)
 
 #calculate mean temperature of each year
-library(lubridate)
-library(ggplot2)
 N0W155_temp.plot <- N0W155_temp
 N0W155_temp.plot$year<-year(N0W155_temp.plot$date_time)
 sea<-data.frame(aggregate(N0W155_temp.plot$sea_temp~year, data=N0W155_temp.plot, mean))    
@@ -306,7 +313,7 @@ a <- ggplot(sea,mapping = aes(x =year, y=sea_surface_temperature))+geom_point() 
   geom_smooth(method = 'loess')
 b <- ggplot(air,mapping = aes(x=year, y=air_temperature)) + geom_point() +
   geom_smooth(method = 'loess')
-library(ggpubr)
+
 ggarrange(a,b)
 ```
 
@@ -317,8 +324,6 @@ N8E165_temp$sea_temp<-as.numeric(N8E165_temp$sea_temp)
 N8E165_temp$air_temp<-as.numeric(N8E165_temp$air_temp)
 
 #calculate mean temperature of each year
-library(lubridate)
-library(ggplot2)
 N8E165_temp.plot <- N8E165_temp
 N8E165_temp.plot$year<-year(N8E165_temp.plot$date_time)
 sea<-data.frame(aggregate(N8E165_temp.plot$sea_temp~year, data=N8E165_temp.plot, mean))    
@@ -331,7 +336,6 @@ a <- ggplot(sea,mapping = aes(x =year, y=sea_surface_temperature))+geom_point() 
   geom_smooth(method = 'loess')
 b <- ggplot(air,mapping = aes(x=year, y=air_temperature)) + geom_point() +
   geom_smooth(method = 'loess')
-library(ggpubr)
 ggarrange(a, b)
 
 ```
@@ -343,8 +347,6 @@ S8E165_temp$sea_temp<-as.numeric(S8E165_temp$sea_temp)
 S8E165_temp$air_temp<-as.numeric(S8E165_temp$air_temp)
 
 #calculate mean temperature of each year
-library(lubridate)
-library(ggplot2)
 S8E165_temp.plot <- S8E165_temp
 S8E165_temp.plot$year<-year(S8E165_temp.plot$date_time)
 sea<-data.frame(aggregate(S8E165_temp.plot$sea_temp~year, data=S8E165_temp.plot, mean))    
@@ -357,7 +359,6 @@ a <- ggplot(sea,mapping = aes(x =year, y=sea_surface_temperature))+geom_point() 
   geom_smooth(method = 'loess')
 b <- ggplot(air,mapping = aes(x=year, y=air_temperature)) + geom_point() +
   geom_smooth(method = 'loess')
-library(ggpubr)
 ggarrange(a, b)
 
 ```
@@ -369,8 +370,6 @@ N8W110_temp$sea_temp<-as.numeric(N8W110_temp$sea_temp)
 N8W110_temp$air_temp<-as.numeric(N8W110_temp$air_temp)
 
 #calculate mean temperature of each year
-library(lubridate)
-library(ggplot2)
 N8W110_temp.plot <- N8W110_temp
 N8W110_temp.plot$year<-year(N8W110_temp.plot$date_time)
 sea<-data.frame(aggregate(N8W110_temp.plot$sea_temp~year, data=N8W110_temp.plot, mean))    
@@ -383,7 +382,6 @@ a <- ggplot(sea,mapping = aes(x =year, y=sea_surface_temperature))+geom_point() 
   geom_smooth(method = 'loess')
 b <- ggplot(air,mapping = aes(x=year, y=air_temperature)) + geom_point() +
   geom_smooth(method = 'loess')
-library(ggpubr)
 ggarrange(a, b)
 ```
 
@@ -394,8 +392,6 @@ S8W110_temp$sea_temp<-as.numeric(S8W110_temp$sea_temp)
 S8W110_temp$air_temp<-as.numeric(S8W110_temp$air_temp)
 
 #calculate mean temperature of each year
-library(lubridate)
-library(ggplot2)
 S8W110_temp.plot <- S8W110_temp
 S8W110_temp.plot$year<-year(S8W110_temp.plot$date_time)
 sea<-data.frame(aggregate(S8W110_temp.plot$sea_temp~year, data=S8W110_temp.plot, mean))    
@@ -408,7 +404,6 @@ a <- ggplot(sea,mapping = aes(x =year, y=sea_surface_temperature))+geom_point() 
   geom_smooth(method = 'loess')
 b <- ggplot(air,mapping = aes(x=year, y=air_temperature)) + geom_point() +
   geom_smooth(method = 'loess')
-library(ggpubr)
 ggarrange(a, b)
 ```
 
