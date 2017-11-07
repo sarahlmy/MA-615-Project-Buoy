@@ -19,13 +19,18 @@ We select 5 buoys respectively at the north, south, east, west and middle points
 
 ```{r, echo = FALSE}
 ## Map
+location.data <- as.data.frame(matrix(data=c(-155,0,-195,8,-195,-8,-110,-8,-110,8),nrow = 5,ncol = 2,byrow = TRUE))
+NAME <- as.data.frame(matrix(data=c("N0W155","N8W195","S8W195","S8W110","N8W110"),nrow = 5,ncol = 1,byrow = T))
+location <- as.data.frame(cbind(location.data,NAME))
+colnames(location) <- c("Longitude","Latitude","name")
+location$Longitude <- as.numeric(location$Longitude)
+location$Latitude <- as.numeric(location$Latitude)
+location$name <- as.character(location$name)
 oceania<- c(-100, -10, -190 , 10)
+
 ggmap(get_map(location = oceania, scale = 1, zoom = 3,source = "google", maptype = "terrain"))+
-  geom_point(aes(x=-155,y=0),alpha=0.5,size=3,color="red")+
-  geom_point(aes(x=-195,y=8),alpha=0.5,size=3,color="red")+
-  geom_point(aes(x=-195,y=-8),alpha=0.5,size=3,color="red")+
-  geom_point(aes(x=-110,y=-8),alpha=0.5,size=3,color="red")+
-  geom_point(aes(x=-110,y=8),alpha=0.5,size=3,color="red")
+  geom_point(aes(x=Longitude,y=Latitude,label=name),data=location,alpha=0.5,size=3,color="red")+
+  geom_text(data = location, aes(x = Longitude, y = Latitude, label = name), size = 3, vjust = 0, hjust = -0.5)
 ```
 
 For each buoy, we collect two kinds of data, one is air temperature and the other is sea surface temperature. All of the temperatures are measured at 12:00pm in local time. The original datasets are stored separately as air temperature and sea surface temperature for each buoy in text format.We import all of the ten datasets into R. As they show in the text file, we treat -9.999 and -9.99 as NAs and remove them and unrelated information, then merge the datasets and reorder the columns. The final data is exported as a csv file with 5 separate tab for each buoy’s data. 
@@ -75,7 +80,7 @@ N0W155_temp$air_temp[N0W155_temp$air_temp=="-9.99"]<-NA
 N0W155_temp<-na.omit(N0W155_temp)
 
 #export data to csv
-write.csv(N0W155_temp, file="C:/Users/sarah/Desktop/MA 615/MA-615-Project-Buoy/0N155W.csv")
+#write.csv(N0W155_temp, file="0N155W.csv")
 ```
 
 ```{r, echo = FALSE}
@@ -123,7 +128,7 @@ N8E165_temp$air_temp[N8E165_temp$air_temp=="-9.99"]<-NA
 N8E165_temp<-na.omit(N8E165_temp)
 
 #export data to csv
-write.csv(N8E165_temp, file="C:/Users/sarah/Desktop/MA 615/MA-615-Project-Buoy/8N165E.csv")
+#write.csv(N8E165_temp, file="8N165E.csv")
 
 ```
 
@@ -172,7 +177,7 @@ S8E165_temp$air_temp[S8E165_temp$air_temp=="-9.99"]<-NA
 S8E165_temp<-na.omit(S8E165_temp)
 
 #export data to csv
-write.csv(S8E165_temp, file="C:/Users/sarah/Desktop/MA 615/MA-615-Project-Buoy/8S165E.csv")
+#write.csv(S8E165_temp, file="8S165E.csv")
 
 ```
 
@@ -221,7 +226,7 @@ N8W110_temp$air_temp[N8W110_temp$air_temp=="-9.99"]<-NA
 N8W110_temp<-na.omit(N8W110_temp)
 
 #export data to csv
-write.csv(N8W110_temp, file="C:/Users/sarah/Desktop/MA 615/MA-615-Project-Buoy/8N110W.csv")
+#write.csv(N8W110_temp, file="8N110W.csv")
 ```
 
 ```{r,echo = FALSE}
@@ -268,13 +273,11 @@ S8W110_temp$sea_temp[S8W110_temp$sea_temp=="-9.999"]<-NA
 S8W110_temp$air_temp[S8W110_temp$air_temp=="-9.99"]<-NA
 S8W110_temp<-na.omit(S8W110_temp)
 
-<<<<<<< HEAD
 #export data to csv
-write.csv(S8W110_temp, file="C:/Users/sarah/Desktop/MA 615/MA-615-Project-Buoy/8SW110.csv")
+#write.csv(S8W110_temp, file="8SW110.csv")
 
 ```
-=======
->>>>>>> f1df6b0dd573d274a3fb909c9df61717fb99e73c
+
 
 
 # Table Analysis
@@ -289,6 +292,7 @@ sum2 <- data.table(Buoy=c("N0W155","S8E165","N8E165","N8W110","S8W110"), Minimum
 print(knitr::kable(sum2, caption = "Air Tempurature"))
 ```
 
+\newpage
 # Exploratory Data Analysis
 
 For each buoy, we calculated the mean of air temperature and sea surface temperature in each year and made a scatter plot to show the trend of temperature change in different years and also the relation between air temperature and sea surface temperature. 
