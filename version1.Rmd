@@ -72,6 +72,9 @@ N0W155_temp$air_temp <-as.numeric(N0W155_temp$air_temp)
 N0W155_temp$sea_temp[N0W155_temp$sea_temp=="-9.999"]<-NA
 N0W155_temp$air_temp[N0W155_temp$air_temp=="-9.99"]<-NA
 N0W155_temp<-na.omit(N0W155_temp)
+
+#export data to csv
+write.csv(N0W155_temp, file="C:/Users/sarah/Desktop/MA 615/MA-615-Project-Buoy/0N155W.csv")
 ```
 
 ```{r, echo = FALSE}
@@ -117,6 +120,10 @@ N8E165_temp$air_temp <-as.numeric(N8E165_temp$air_temp)
 N8E165_temp$sea_temp[N8E165_temp$sea_temp=="-9.999"]<-NA
 N8E165_temp$air_temp[N8E165_temp$air_temp=="-9.99"]<-NA
 N8E165_temp<-na.omit(N8E165_temp)
+
+#export data to csv
+write.csv(N8E165_temp, file="C:/Users/sarah/Desktop/MA 615/MA-615-Project-Buoy/8N165E.csv")
+
 ```
 
 ```{r, echo = FALSE}
@@ -162,6 +169,10 @@ S8E165_temp$air_temp <-as.numeric(S8E165_temp$air_temp)
 S8E165_temp$sea_temp[S8E165_temp$sea_temp=="-9.999"]<-NA
 S8E165_temp$air_temp[S8E165_temp$air_temp=="-9.99"]<-NA
 S8E165_temp<-na.omit(S8E165_temp)
+
+#export data to csv
+write.csv(S8E165_temp, file="C:/Users/sarah/Desktop/MA 615/MA-615-Project-Buoy/8S165E.csv")
+
 ```
 
 ```{r, echo = FALSE}
@@ -207,6 +218,9 @@ N8W110_temp$air_temp <-as.numeric(N8W110_temp$air_temp)
 N8W110_temp$sea_temp[N8W110_temp$sea_temp=="-9.999"]<-NA
 N8W110_temp$air_temp[N8W110_temp$air_temp=="-9.99"]<-NA
 N8W110_temp<-na.omit(N8W110_temp)
+
+#export data to csv
+write.csv(N8W110_temp, file="C:/Users/sarah/Desktop/MA 615/MA-615-Project-Buoy/8N110W.csv")
 ```
 
 ```{r,echo = FALSE}
@@ -252,13 +266,12 @@ S8W110_temp$air_temp <-as.numeric(S8W110_temp$air_temp)
 S8W110_temp$sea_temp[S8W110_temp$sea_temp=="-9.999"]<-NA
 S8W110_temp$air_temp[S8W110_temp$air_temp=="-9.99"]<-NA
 S8W110_temp<-na.omit(S8W110_temp)
+
+#export data to csv
+write.csv(S8W110_temp, file="C:/Users/sarah/Desktop/MA 615/MA-615-Project-Buoy/8SW110.csv")
+
 ```
 
-```{r,echo = FALSE}
-# write csv file
-temp <- rbind(N0W155_temp, N8E165_temp,S8E165_temp,N8W110_temp,S8W110_temp)
-write.csv(temp, "team14_data.csv")
-```
 
 ## Summary of 5 buoys data
 ```{r results="asis", echo = FALSE}
