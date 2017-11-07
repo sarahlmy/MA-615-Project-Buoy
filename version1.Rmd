@@ -64,8 +64,9 @@ N0W155_temp$air_temp <-as.numeric(N0W155_temp$air_temp)
 #id<-c(1,2,3,4)
 #time<-c("00:00:01","01:02:00","09:30:01","14:15:25")
 #df<-data.frame(id,time)
-N0W155_temp$time_diff = as.POSIXct(N0W155_temp$time_diff, format = "%H:%M:%S")
-is.POSIXct(N0W155_temp$time_diff)
+#df$time = as.POSIXct(df$time, format = "%H:%M:%S")
+#N0W155_temp$time_diff = as.POSIXct(N0W155_temp$time_diff, format = "%H:%M:%S")
+#is.POSIXct(N0W155_temp$time_diff)
 
 # Remove NAs
 N0W155_temp$sea_temp[N0W155_temp$sea_temp=="-9.999"]<-NA
@@ -397,3 +398,39 @@ b <- ggplot(air,mapping = aes(x=year, y=air_temperature)) + geom_point() +
 library(ggpubr)
 ggarrange(a, b)
 ```
+
+##Data Sources
+###1) 0N155W
+####Air Temperature
+http://tao.ndbc.noaa.gov/tao/data_download/cache/201711/06-6688/TAO_T0N155W_M_AIRT_daily.ascii
+
+####Sea Temperature
+http://tao.ndbc.noaa.gov/tao/data_download/cache/201711/d06-350/TAO_T0N155W_M_SST_daily.ascii
+
+###2) 8S165E
+####Air Temperature
+http://tao.ndbc.noaa.gov/tao/data_download/cache/201711/06-6688/TAO_T8S165E_M_AIRT_daily.ascii
+
+####Sea Temperature
+http://tao.ndbc.noaa.gov/tao/data_download/cache/201711/d06-350/TAO_T8S165E_M_SST_daily.ascii
+
+###3) 8N165E
+####Air Temperature
+http://tao.ndbc.noaa.gov/tao/data_download/cache/201711/06-6688/TAO_T8N165E_M_AIRT_daily.ascii
+
+####Sea Temperature
+http://tao.ndbc.noaa.gov/tao/data_download/cache/201711/d06-350/TAO_T8N165E_M_SST_daily.ascii
+
+###4) 8S110W
+####Air Temperature
+http://tao.ndbc.noaa.gov/tao/data_download/cache/201711/06-6688/TAO_T8S110W_M_AIRT_daily.ascii
+
+####Sea Temperature
+http://tao.ndbc.noaa.gov/tao/data_download/cache/201711/d06-350/TAO_T8S110W_M_SST_daily.ascii
+
+###5) 8N110W
+####Air Temperature:
+http://tao.ndbc.noaa.gov/tao/data_download/cache/201711/06-6688/TAO_T8N110W_M_AIRT_daily.ascii
+
+####Sea Temperature:
+http://tao.ndbc.noaa.gov/tao/data_download/cache/201711/d06-350/TAO_T8N110W_M_SST_daily.ascii
